@@ -28,10 +28,13 @@ if (isset($_POST['add'])) {
   $_SESSION['cart'][$id]['Desc'] = $products[$id][2];
   $_SESSION['cart'][$id]['Price'] = $products[$id][3];
   $_SESSION['cart'][$id]['Img'] = $products[$id][4];
+  $_SESSION['cart'][$id]['ID'] = $id;
+  if (!isset($_SESSION['cart'][$id]['Count'])) $_SESSION['cart'][$id]['Count'] = 1;
+  else $_SESSION['cart'][$id]['Count'] += 1;
 }
 echo "<link href='https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css' rel='stylesheet' integrity='sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH' crossorigin='anonymous'>";
 
-echo "<table class='table table-striped table-dark table-bordered table-hover'>
+echo "<table class='table table-striped table-dark table-bordered table-hover' style='margin-bottom:0px;'>
     <thead>
     <tr>
       <th scope='col'>Manufacturer</th>
@@ -44,7 +47,6 @@ echo "<table class='table table-striped table-dark table-bordered table-hover'>
 
 
 for ($i = 0; $i < count($products); $i++) {
-
   echo "<tbody>
         <tr>
           <th scope='row'>" . $products[$i % count($products)][0] . "</th>
@@ -65,6 +67,6 @@ for ($i = 0; $i < count($products); $i++) {
 echo "</table>";
 
 
-echo "<a href='cart.php' class='btn btn-success fixed-bottom w-25' >Go to the cart
-<span class='badge badge-light'>" . count($_SESSION['cart']) . "</span>
+echo "<a href='cart.php' class='btn btn-success fixed-bottom w-25'>Go to the cart
+<span class='badge badge-light' style='font-size:18px;'>" . count($_SESSION['cart']) . "</span>
 </a>";
