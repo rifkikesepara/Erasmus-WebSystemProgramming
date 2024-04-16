@@ -11,7 +11,7 @@ $initialTable = array(
     array(2, 0, 2, 0, 2, 0, 2, 0)
 );
 
-// file_put_contents('table.txt',  '<?php return ' . var_export($table, true) . ';');
+// file_put_contents('table.txt',  '<?php return ' . var_export($initialTable, true) . ';');
 
 $turnFile = fopen("turn.txt", "r");
 $turn = fread($turnFile, 10);
@@ -71,8 +71,12 @@ if (isset($_POST['button1'])) {
     $pLetter = $_POST['pPositionLetter'];
     $nLetter = $_POST['nPositionLetter'];
     $nNumber = 8 - $_POST['nPositionNumber'];
-
     if (
+        abs($pNumber - $nNumber) != 1 ||
+        (abs(LetterToIndex($pLetter) - LetterToIndex($nLetter)) == 1 && abs($pNumber - $nNumber)) != 1 ||
+        (abs(LetterToIndex($pLetter) - LetterToIndex($nLetter)) != 1 && abs($pNumber - $nNumber)) == 1
+    ) echo "Please select a proper position";
+    elseif (
         $table[$nNumber][LetterToIndex($nLetter)] == 0 &&
         abs($pNumber - $nNumber) == 1
     ) {
@@ -84,15 +88,18 @@ if (isset($_POST['button1'])) {
         $table[$nNumber][LetterToIndex($nLetter)] == 1 ||
         $table[$nNumber][LetterToIndex($nLetter)] == 2
     ) {
-        $newLetter = LetterToIndex($_POST['nPositionLetter']) + abs(LetterToIndex($_POST['nPositionLetter']) - LetterToIndex($_POST['pPositionLetter']));
-        $newNumber = (8 - $_POST['nPositionNumber']) + (8 - $_POST['nPositionNumber']) - (8 - $_POST['pPositionNumber']);
-        setPosition($newLetter, $newNumber);
-        $table[$pNumber][LetterToIndex($pLetter)] = 0;
-        $table[$nNumber][LetterToIndex($nLetter)] = 0;
+        if ($table[$pNumber][LetterToIndex($pLetter)] != $table[$nNumber][LetterToIndex($nLetter)]) {
+            $newLetter = LetterToIndex($_POST['nPositionLetter']) + abs(LetterToIndex($_POST['nPositionLetter']) - LetterToIndex($_POST['pPositionLetter']));
+            $newNumber = (8 - $_POST['nPositionNumber']) * 2 - (8 - $_POST['pPositionNumber']);
+            setPosition($newLetter, $newNumber);
+            $table[$pNumber][LetterToIndex($pLetter)] = 0;
+            $table[$nNumber][LetterToIndex($nLetter)] = 0;
 
-        file_put_contents('table.txt',  '<?php return ' . var_export($table, true) . ';');
-    } elseif (abs($pNumber - $nNumber) != 1) echo "Please select a proper position";
-    else echo "Please select an empty position";
+            file_put_contents('table.txt',  '<?php return ' . var_export($table, true) . ';');
+        } else {
+            echo "Please select an empty position";
+        }
+    } else echo "Please select an empty position";
 }
 
 if (isset($_POST['reset'])) {
