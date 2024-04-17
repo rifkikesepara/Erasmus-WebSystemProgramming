@@ -41,7 +41,7 @@ if (isset($_POST['setButton'])) {
                 <td><?php echo $product['Price'] ?></td>
                 <td>
                     <form method="post" style="display: flex;align-items: center;flex-direction: column;">
-                        <img style="margin-bottom: 5;border-radius: 10px;" src=<?php echo $product['Img'] ?> width="80" />
+                        <img style="margin-bottom: 5;border-radius: 10px;" src=<?php echo $product['Img'][0] ?> width="80" />
                         <input style="display: none;" name="id" value=<?php echo $product["ID"] ?> />
                         <input class="form-control" style="width: 60px;margin-bottom: 3;" name="count" type="number" value=<?php echo $product["Count"] ?> />
                         <div>
@@ -54,6 +54,6 @@ if (isset($_POST['setButton'])) {
         </tbody>
         <?php $index++; ?>
     <?php endforeach; ?>
-
-    <a href='task1.php' class='btn btn-success fixed-bottom w-25'>Go back to list
-    </a>
+</table>
+<a href='task1.php' class='btn btn-success fixed-bottom w-25'>Go back to list
+</a>
